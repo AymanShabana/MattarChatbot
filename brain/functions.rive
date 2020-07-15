@@ -1,0 +1,25 @@
++ run printtest
+- <call>printtest <get name> <bot name></call>
+
+> object printtest python
+print("Print inside function")
+return "printTest"+str(args[0])+str(args[1])
+< object
+
+> object takeattendance python
+import sqlite3
+import arrow
+message=""
+db = sqlite3.connect('attendance.db')
+c = db.cursor()
+t = (str(args[0]),str(args[1]))
+c.execute("SELECT * FROM attendance WHERE name=? AND year=? AND date='"+str(arrow.now().format('YYYY-MM-DD'))+"'", t)
+if(c.fetchone()==None):
+    c.execute("INSERT INTO attendance VALUES('"+str(args[0])+"','"+str(args[1])+"','" + str(arrow.now().format('YYYY-MM-DD')) + "')")
+    message="Attendance taken successfully"
+else:
+    message="Attendance has been recorded already"
+db.commit()
+db.close()
+return message
+< object
