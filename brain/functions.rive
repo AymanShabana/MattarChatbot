@@ -9,13 +9,23 @@ return "printTest"+str(args[0])+str(args[1])
 > object takeattendance python
 import sqlite3
 import arrow
+
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+client = gspread.authorize(creds)
+sheet = client.open("Attendance").sheet1
+row=[str(args[0])+" "+str(args[1]),str(args[2]),str(arrow.now().format('YYYY-MM-DD'))]
 message=""
 db = sqlite3.connect('attendance.db')
 c = db.cursor()
-t = (str(args[0]),str(args[1]))
+t = (str(args[0])+" "+str(args[1]),str(args[2]))
 c.execute("SELECT * FROM attendance WHERE name=? AND year=? AND date='"+str(arrow.now().format('YYYY-MM-DD'))+"'", t)
 if(c.fetchone()==None):
-    c.execute("INSERT INTO attendance VALUES('"+str(args[0])+"','"+str(args[1])+"','" + str(arrow.now().format('YYYY-MM-DD')) + "')")
+    c.execute("INSERT INTO attendance VALUES('"+row[0]+"','"+str(args[2])+"','" + str(arrow.now().format('YYYY-MM-DD')) + "')")
+    sheet.insert_row(row,2)
     message="Attendance taken successfully"
 else:
     message="Attendance has been recorded already"
