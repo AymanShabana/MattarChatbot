@@ -11,6 +11,9 @@
   + #
   - Your name is a number?
 
+  + _
+  - I meant your fullname
+
   + *
   - <set name=<formal>>Nice to meet you, <get name>!\n
   ^ What year are you in?{topic=asked_year}
@@ -21,9 +24,12 @@
   + #
   - Your year is a number? I meant freshman, sophomore, etc.
 
-  + *
+  + (freshman|sophomore|junior|senior1|senior2|senior)
   - <set year=<formal>>Oh, so you're a <get year>!\n
   ^ Would you like me to take your attendance?{topic=take_attendance}
+
+  + *
+  - I'm sorry, I don't recognize that as a real year. Try again.
 
 < topic
 
@@ -34,6 +40,9 @@
 
   + no
   - Okay then. Just let me know if you change your mind!{topic=random}
+
+  + *
+  - Sorry, I don't understand you.
 
 < topic
 
