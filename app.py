@@ -38,7 +38,7 @@ def chat():
     if request.method == 'POST':
         userMsg = request.form['content']
         botReply = bot.chat(userMsg)
-        newConv = Converation(userMsg=userMsg,botReply=botReply)
+        newConv = Converation(user=current_user.username,userMsg=userMsg,botReply=botReply)
         try:
             db.session.add(newConv)
             db.session.commit()
@@ -51,7 +51,15 @@ def index():
     user = Users.query.filter_by(username='ayman').first()
     login_user(user)
     chat = Converation.query.order_by(Converation.date_created).all()
-    return render_template('index.html',chat=chat)
+    #return render_template('index.html',chat=chat)
+    return render_template('login.html')
+
+@app.route('/register',methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+
+
 
 @app.route('/logout')
 @login_required
