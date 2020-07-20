@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% block head %}
+<title>Mattar Chatbot</title>
+{% endblock%}
+
+{% block body %}
+<div class="content">
+<h1>Chat</h1>
+    {% if chat|length <1 %}
+    <h4>Start chatting now.</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>User Message</th>
+            <th>Bot Reply</th>
+        </tr>
+        {% for c in chat%}
+            <tr>
+                <td>{{ c.userMsg }}</td>
+                <td>{{ c.botReply }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form action="/chat" method="post">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Message Bot">
+    </form></div>
+{% endblock%}
