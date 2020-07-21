@@ -39,7 +39,7 @@ def load_user(user_id):
 def chat():
     if request.method == 'POST':
         userMsg = request.form['content']
-        botReply = bot.chat(userMsg)
+        botReply = bot.chat(userMsg, current_user.username)
         newConv = Converation(user=current_user.username,userMsg=userMsg,botReply=botReply,sessNum=current_user.sessNum)
         try:
             db.session.add(newConv)
@@ -53,9 +53,7 @@ def index():
     if not current_user.is_authenticated:
         return render_template('login.html')
     else:
-        #user = Users.query.filter_by(username='ayman').first()
-        #login_user(user)
-        chat = Converation.query.filter_by(sessNum=current_user.sessNum).order_by(Converation.date_created).all()
+        chat = Converation.query.filter_by(user=current_user.username,sessNum=current_user.sessNum).order_by(Converation.date_created).all()
         return render_template('index.html',chat=chat)
 
 @app.route('/register',methods=['GET','POST'])
@@ -69,6 +67,7 @@ def register():
             db.session.commit()
             user = Users.query.filter_by(username=username).first()
             login_user(user,remember=False)
+            bot.createInstance(current_user.username)
             return redirect('/')
         except:
             return "Database addition error occurred"
@@ -85,12 +84,15 @@ def login():
     user.sessNum += 1
     db.session.commit()
     login_user(user,remember=False)
+    bot.createInstance(current_user.username)
     return redirect('/')
 
 
 @app.route('/logout')
 @login_required
 def logout():
+    if bot.checkInstance(current_user.username):
+        bot.removeInstance(current_user.username)
     logout_user()
     return render_template('login.html')
 

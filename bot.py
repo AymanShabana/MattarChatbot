@@ -1,16 +1,25 @@
 from rivescript import RiveScript
 
+bots={}
 
-bot = RiveScript()
-bot.load_directory("./brain")
-bot.sort_replies()
 
-def chat(message):
-    #msg = input('You> ')
-    #if msg == '/quit':
-        #quit()
+def createInstance(username):
+    bots[username] = RiveScript()
+    bots[username].load_directory("./brain")
+    bots[username].sort_replies()
+
+def removeInstance(username):
+    bots.pop(username)
+
+def checkInstance(username):
+    return username in bots
+
+def chat(message,username):
+    if not username in bots:
+        bots[username] = RiveScript()
+        bots[username].load_directory("./brain")
+        bots[username].sort_replies()
     if message == "":
         return "Send me a proper message"
-    reply = bot.reply("user", message)
+    reply = bots[username].reply("user", message)
     return reply
-    #print('Bot>', reply)
