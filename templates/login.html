@@ -5,11 +5,11 @@
 {% endblock%}
 
 {% block body %}
-<div class="container">
+<div class="content">
       <h1>Please login</h1>
       <br>
-      <form action="" method="post">
-        <input type="text" placeholder="Username" name="username" value="{{
+      <form action="/login" method="post">
+        <input type="text" placeholder="Email" name="username" value="{{
           request.form.username }}">
          <input type="password" placeholder="Password" name="password" value="{{
           request.form.password }}">
@@ -18,5 +18,7 @@
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
+    <a href="/register"> Register now</a>
+
     </div>
 {% endblock%}

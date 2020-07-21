@@ -27,6 +27,8 @@ class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
+    reciter = db.Column(db.String(200))
+    sessNum = db.Column(db.Integer, nullable=False, default=1)
     def __repr__(self):
         return "<User %r>" % self.username
 @login_manager.user_loader
@@ -38,7 +40,7 @@ def chat():
     if request.method == 'POST':
         userMsg = request.form['content']
         botReply = bot.chat(userMsg)
-        newConv = Converation(user=current_user.username,userMsg=userMsg,botReply=botReply)
+        newConv = Converation(user=current_user.username,userMsg=userMsg,botReply=botReply,sessNum=current_user.sessNum)
         try:
             db.session.add(newConv)
             db.session.commit()
@@ -48,30 +50,54 @@ def chat():
 
 @app.route('/',methods=['GET'])
 def index():
-    user = Users.query.filter_by(username='ayman').first()
-    login_user(user)
-    chat = Converation.query.order_by(Converation.date_created).all()
-    #return render_template('index.html',chat=chat)
-    return render_template('login.html')
+    if not current_user.is_authenticated:
+        return render_template('login.html')
+    else:
+        #user = Users.query.filter_by(username='ayman').first()
+        #login_user(user)
+        chat = Converation.query.filter_by(sessNum=current_user.sessNum).order_by(Converation.date_created).all()
+        return render_template('index.html',chat=chat)
 
-@app.route('/register',methods=['POST'])
+@app.route('/register',methods=['GET','POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        newUser = Users(username=username,password=password)
+        try:
+            db.session.add(newUser)
+            db.session.commit()
+            user = Users.query.filter_by(username=username).first()
+            login_user(user,remember=False)
+            return redirect('/')
+        except:
+            return "Database addition error occurred"
+    else:
+        return render_template('register.html')
+
+@app.route('/login',methods=['POST'])
+def login():
     username = request.form['username']
     password = request.form['password']
-
+    user = Users.query.filter_by(username=username,password=password).first()
+    if user == None:
+        return render_template('login.html')
+    user.sessNum += 1
+    db.session.commit()
+    login_user(user,remember=False)
+    return redirect('/')
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    chat = Converation.query.order_by(Converation.date_created).all()
-    return render_template('index.html',chat=chat)
+    return render_template('login.html')
 
 @app.route('/profile')
 @login_required
 def profile():
-    return "User is " +current_user.username
+    return "User is " +current_user.username+" and session is "+str(current_user.sessNum)
 
 if __name__ == "__main__":
     app.run(debug=True)
