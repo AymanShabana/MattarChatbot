@@ -1,11 +1,9 @@
 from rivescript import RiveScript
 
-bot = RiveScript()
-bot.load_directory("./brain")
+bot = RiveScript(utf8=True)
+bot.load_directory('brain')
 bot.sort_replies()
 
-def chat(message,username):
-    if message == "":
-        return "Send me a proper message"
-    reply = bot.reply(username, message)
-    return reply
+while True:
+    message = input('You: ')
+    print('Bot:', bot.reply('User', message))
