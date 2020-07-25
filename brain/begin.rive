@@ -1,0 +1,37 @@
+! version = 2.0
+
+> begin
+  + request
+  * <get met> == undefined => <set met=true>{topic=arabic}{ok}
+  - {ok}
+< begin
+
+> topic arabic
+  + *
+  -<call>get_reciter</call>{topic=new_user}ستجري هذه المحادثة باللغة العربية
+< topic
+
+
+> topic new_user
+  + *
+  * <get reciter> != undefined => مرحباً بك في تطبيق مُعَلم.{topic=random}
+  - مرحباً بك في تطبيق مُعَلم. هل تريد أن تعين القارئ؟{topic=asked_reciter}
+< topic
+
+> topic asked_reciter
+  + (نعم|أجل)
+  - رائع، يمكنك أن تختار أحد هؤلاء القراء:
+  ^ <call>get_all_reciters</call>{topic=choose_reciter}
+
+  + (لا|كلا)
+  - لا بأس، سيكون القارئ الشيخ مشاري راشد. فقط أرسل "تغيير القارئ" إذا أردت تغييره.
+  ^ <set reciter=ar.alafasy>{topic=random}
+
+  + *
+  - هل يمكنك الإجابة بنعم أو لا؟
+< topic
+
+> topic choose_reciter
+  + *
+  - <call>get_identifier <star></call>
+< topic

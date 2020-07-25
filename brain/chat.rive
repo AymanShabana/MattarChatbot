@@ -1,0 +1,17 @@
++ تغيير القارئ
+- هل تريد أن تغير القارئ؟{topic=change_reciter}
+
+> topic change_reciter
+  + (نعم|أجل)
+  - رائع، يمكنك أن تختار أحد هؤلاء القراء:
+  ^ <call>get_all_reciters</call>{topic=choose_reciter}
+
+  + (لا|كلا)
+  - {random}لا بأس|كما تريد{/random}{topic=random}
+
+  + *
+  - هل يمكنك الإجابة بنعم أو لا؟
+< topic
+
++ تشغيل سورة *
+- <call>play_surah <star></call>
