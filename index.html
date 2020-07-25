@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Mu'alim</title>
+  </head>
+  <body class="bg-light">
+    <div class="container h-100 p-4">
+      <h1 class="display-4 pb-3">المراسلة</h1>
+      <div id="conversation" class="container bg-white rounded overflow-auto h-75 p-4">
+        {% if session.get('chat') %}
+          {% for message in session['chat'] %}
+            <div class="media w-50 mb-4 {% if message['author'] == 'bot' %}ml-auto{% endif %}">
+              <div class="media-body {% if message['author'] == 'bot' %}mr-3{% endif %}">
+                <div class="{% if message['author'] == 'user' %}bg-primary{% else %}bg-secondary{% endif %} rounded p-2 mb-1">
+                  <p class="text-white mb-0">
+                    {% if message['author'] == 'bot' %}{{ message['text']|safe }}{% else %}{{ message['text'] }}{% endif %}
+                  </p>
+                </div>
+                <span class="small font-italic text-secondary">{{ message['timestamp'] }}</span>
+              </div>
+              {% if message['author'] == 'bot' %}
+                <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Mu'alim" width=50 class="rounded-circle">
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <h1 class="display-3 text-center">مُعَلم</h1>
+        {% endif %}
+      </div>
+      <form method="post" class="bg-light">
+        <div class="input-group">
+          <input type"text" name="message" placeholder="اكتب رسالة..." class="form-control bg-light rounded-0 border-0" required>
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
+    <script>
+      $(function(){
+        $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
+      });
+    </script>
+  </body>
+</html>
