@@ -4,7 +4,7 @@ from datetime import datetime
 import bot
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from message import Message
-
+import json
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mattarchat.db'
 app.config['SECRET_KEY'] = 'thisissecret'
@@ -52,6 +52,8 @@ def index():
         return render_template('login.html')
     else:
         if request.method == 'POST':
+            if session.get('ayat') is not None:
+                session.pop('ayat',None)
             message = Message(request.form['message'], '10:00', current_user.username)
             if message.text:
                 response = Message(bot.reply(current_user.username, message.text), '10:00', 'bot')
@@ -101,6 +103,7 @@ def login():
 @login_required
 def logout():
     session.pop('chat',None)
+    session.pop('ayat',None)
     bot.logoutUser(current_user.username)
     logout_user()
     return render_template('login.html')

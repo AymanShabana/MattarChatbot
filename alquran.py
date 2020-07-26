@@ -1,6 +1,6 @@
 import requests
 from playsound import playsound
-
+from flask import session
 api_url_base = 'http://api.alquran.cloud/v1/'
 cdn_url_base = 'http://cdn.alquran.cloud/media/'
 
@@ -47,4 +47,9 @@ def get_absolute_ayah_number(surah_number, relative_ayah_number):
     return None
 
 def play_ayah(identifier, absolute_ayah_number):
-    playsound('https://cdn.islamic.network/quran/audio/{0}/{1}/{2}.mp3'.format(64, identifier, absolute_ayah_number))
+    aya = 'https://cdn.islamic.network/quran/audio/{0}/{1}/{2}.mp3'.format(64, identifier, absolute_ayah_number)
+    if session.get('ayat') is not None:
+        session['ayat'] = session['ayat'] + [aya]
+    else:
+        session['ayat'] = [aya]
+    #playsound('https://cdn.islamic.network/quran/audio/{0}/{1}/{2}.mp3'.format(64, identifier, absolute_ayah_number))

@@ -8,6 +8,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Mu'alim</title>
     <a class="btn btn-primary mt-2" href="/logout">Logout</a>
+    <script>
+    var files = [];
+        {% for aya in session['ayat'] %}
+        files.push(new Audio('{{ aya|safe }}'));
+        console.log(files);
+        {% endfor %}
+    var i = -1;
+    playSnd();
+
+    function playSnd() {
+        i++;
+        if (i == files.length) return;
+        files[i].addEventListener('ended', playSnd);
+        files[i].play();
+}
+
+
+  </script>
   </head>
   <body class="bg-light">
     <div class="container h-100 p-4">
@@ -50,5 +68,6 @@
         $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
       });
     </script>
+
   </body>
 </html>
