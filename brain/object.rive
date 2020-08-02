@@ -1,0 +1,42 @@
+> object get_all_reciters python
+  from alquran import get_all_reciters
+  result = get_all_reciters()
+  reciters = '<br>'
+  for i, reciter in enumerate(result):
+    reciters += reciter
+    if i < len(result) - 1:
+      reciters += '<br>'
+  return reciters
+< object
+
+> object get_identifier python
+  from alquran import get_identifier
+  from app import setReciter
+  identifier = get_identifier(' '.join(args))
+  if identifier is not None:
+    rs.set_uservar(rs.current_user(), 'reciter', identifier)
+    setReciter(identifier)
+    rs.set_uservar(rs.current_user(), 'topic', 'random')
+    return 'أحسنت الاختيار.'
+  return 'هل يمكنك كتابة اسم القارئ كما أرسلته لك؟'
+< object
+
+> object play_surah python
+  from alquran import get_surah_number, get_number_of_ayahs, get_absolute_ayah_number, play_ayah
+  identifier = rs.get_uservar(rs.current_user(), 'reciter')
+  surah_number = get_surah_number(' '.join(args))
+  if surah_number is not None:
+    number_of_ayahs = get_number_of_ayahs(surah_number)
+    first_ayah_number = get_absolute_ayah_number(surah_number, 1)
+    for i in range(first_ayah_number, first_ayah_number + number_of_ayahs):
+      play_ayah(identifier, i)
+    return 'تم تشغيل السورة.'
+  return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+< object
+
+> object get_reciter python
+from app import getReciter
+reciter = getReciter()
+if reciter != None:
+    rs.set_uservar(rs.current_user(), 'reciter', reciter)
+< object
