@@ -40,3 +40,19 @@ reciter = getReciter()
 if reciter != None:
     rs.set_uservar(rs.current_user(), 'reciter', reciter)
 < object
+
+> object get_tafseer_verse python
+  from alquran import get_surah_number, get_tafseer_verse
+  surah_number = get_surah_number(args[1])
+  if surah_number is not None:
+    return get_tafseer_verse(1,surah_number,args[0])
+  return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+< object
+
+> object get_tafseer_range python
+  from alquran import get_surah_number, get_tafseer_range
+  surah_number = get_surah_number(args[2])
+  if surah_number is not None:
+    return get_tafseer_range(1,surah_number,args[0],args[1])
+  return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+< object
