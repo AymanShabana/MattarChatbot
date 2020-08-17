@@ -76,5 +76,8 @@ def get_tafseer_verse(tafseer_id,sura_number,ayah_number):
 def get_tafseer_range(tafseer_id,sura_number,ayah_number_from,ayah_number_to):
     tafseer = ''
     for i in range(int(ayah_number_from),int(ayah_number_to)+1):
-        tafseer += str(get_tafseer_verse(tafseer_id,sura_number,str(i)))+" "
+        verse = get_tafseer_verse(tafseer_id,sura_number,str(i))
+        if verse is None:
+            return None
+        tafseer += str(verse)+" "
     return tafseer
