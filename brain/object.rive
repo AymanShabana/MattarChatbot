@@ -45,7 +45,10 @@ if reciter != None:
   from alquran import get_surah_number, get_tafseer_verse
   surah_number = get_surah_number(args[1])
   if surah_number is not None:
-    return get_tafseer_verse(1,surah_number,args[0])
+    myTafseer = get_tafseer_verse(1,surah_number,args[0])
+    if myTafseer is None:
+        return 'فضلاً أعد كتابة الاية بطريقة صحيحة.'
+    return myTafseer
   return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
 < object
 
@@ -53,6 +56,9 @@ if reciter != None:
   from alquran import get_surah_number, get_tafseer_range
   surah_number = get_surah_number(args[2])
   if surah_number is not None:
-    return get_tafseer_range(1,surah_number,args[0],args[1])
+    myTafseer = get_tafseer_range(1,surah_number,args[0],args[1])
+    if myTafseer is None:
+        return 'فضلاً أعد كتابة الايات بطريقة صحيحة.'
+    return myTafseer
   return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
 < object
