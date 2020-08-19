@@ -15,3 +15,10 @@
 
 + تشغيل سورة *
 - <call>play_surah <star></call>
+
++ تشغيل الاية * من سورة *
+- <call>play_aya <star1> <star2></call>
+
++ تشغيل من الاية * الي * من سورة *
+- <call>play_aya_range <star1> <star2> <star3></call>
+
