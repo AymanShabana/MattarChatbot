@@ -69,3 +69,47 @@ if reciter != None:
   except:
     return 'فضلاً أعد كتابة الطلب بطريقة صحيحة.'
 < object
+
+
+> object get_tafseer python
+  from alquran import get_surah_number, get_tafseer_range, get_number_of_ayahs
+  try:
+      surah_number = get_surah_number(args[0])
+      if surah_number is not None:
+        number_of_ayahs = get_number_of_ayahs(surah_number)
+        myTafseer = get_tafseer_range(1,surah_number,1,number_of_ayahs)
+        return myTafseer
+      return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+  except:
+    return 'فضلاً أعد كتابة الطلب بطريقة صحيحة.'
+< object
+
+> object play_aya python
+  from alquran import get_surah_number, get_absolute_ayah_number, play_ayah
+  identifier = rs.get_uservar(rs.current_user(), 'reciter')
+  try:
+      surah_number = get_surah_number(args[1])
+      if surah_number is not None:
+        abs_ayah_number = get_absolute_ayah_number(surah_number, args[0])
+        play_ayah(identifier, abs_ayah_number)
+        return 'تم تشغيل الاية.'
+      return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+  except:
+    return 'فضلاً أعد كتابة الطلب بطريقة صحيحة.'
+< object
+
+> object play_aya_range python
+  from alquran import get_surah_number, get_absolute_ayah_number, play_ayah
+  identifier = rs.get_uservar(rs.current_user(), 'reciter')
+  try:
+      surah_number = get_surah_number(args[2])
+      if surah_number is not None:
+        number_of_ayahs = int(args[1])-int(args[0])+1
+        first_ayah_number = get_absolute_ayah_number(surah_number, args[0])
+        for i in range(first_ayah_number, first_ayah_number + number_of_ayahs):
+            play_ayah(identifier, i)
+        return 'تم تشغيل الايات.'
+      return 'فضلاً أعد كتابة اسم السورة بطريقة صحيحة.'
+  except:
+    return 'فضلاً أعد كتابة الطلب بطريقة صحيحة.'
+< object
