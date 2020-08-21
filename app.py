@@ -54,9 +54,9 @@ def index():
         if request.method == 'POST':
             if session.get('ayat') is not None:
                 session.pop('ayat',None)
-            message = Message(request.form['message'], '10:00', current_user.username)
+            message = Message(request.form['message'], datetime.now().strftime('%H:%M'), current_user.username)
             if message.text:
-                response = Message(bot.reply(current_user.username, message.text), '10:00', 'bot')
+                response = Message(bot.reply(current_user.username, message.text), datetime.now().strftime('%H:%M'), 'bot')
                 newConv = Converation(user=current_user.username, userMsg=message.text, botReply=response.text,sessNum=current_user.sessNum)
                 try:
                     db.session.add(newConv)
